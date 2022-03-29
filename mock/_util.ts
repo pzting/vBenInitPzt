@@ -1,11 +1,16 @@
 // Interface data format used to return a unified format
 
-export function resultSuccess<T = Recordable>(result: T, { message = 'ok' } = {}) {
+export function resultSuccess<T = Recordable>(result: T, { message = "ok" } = {}) {
   return {
     code: 0,
-    result,
+    /** 2022/3/29
+     *作者:pzt
+     *内容:修改result格式
+     **/
+    // result,
+    ...result,
     message,
-    type: 'success',
+    type: "success"
   };
 }
 
@@ -13,25 +18,27 @@ export function resultPageSuccess<T = any>(
   page: number,
   pageSize: number,
   list: T[],
-  { message = 'ok' } = {},
+  { message = "ok" } = {}
 ) {
   const pageData = pagination(page, pageSize, list);
 
   return {
     ...resultSuccess({
-      items: pageData,
-      total: list.length,
+      page: {
+        items: pageData,
+        total: list.length
+      }
     }),
-    message,
+    message
   };
 }
 
-export function resultError(message = 'Request failed', { code = -1, result = null } = {}) {
+export function resultError(message = "Request failed", { code = -1, result = null } = {}) {
   return {
     code,
     result,
     message,
-    type: 'error',
+    type: "error"
   };
 }
 

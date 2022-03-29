@@ -1,5 +1,5 @@
-import type { BasicTableProps, FetchParams, SorterResult } from '../types/table';
-import type { PaginationProps } from '../types/pagination';
+import type { BasicTableProps, FetchParams, SorterResult } from "../types/table";
+import type { PaginationProps } from "../types/pagination";
 import {
   ref,
   unref,
@@ -9,13 +9,13 @@ import {
   watch,
   reactive,
   Ref,
-  watchEffect,
-} from 'vue';
-import { useTimeoutFn } from '/@/hooks/core/useTimeout';
-import { buildUUID } from '/@/utils/uuid';
-import { isFunction, isBoolean } from '/@/utils/is';
-import { get, cloneDeep, merge } from 'lodash-es';
-import { FETCH_SETTING, ROW_KEY, PAGE_SIZE } from '../const';
+  watchEffect
+} from "vue";
+import { useTimeoutFn } from "/@/hooks/core/useTimeout";
+import { buildUUID } from "/@/utils/uuid";
+import { isFunction, isBoolean } from "/@/utils/is";
+import { get, cloneDeep, merge } from "lodash-es";
+import { FETCH_SETTING, ROW_KEY, PAGE_SIZE } from "../const";
 
 interface ActionType {
   getPaginationInfo: ComputedRef<boolean | PaginationProps>;
@@ -30,6 +30,7 @@ interface SearchState {
   sortInfo: Recordable;
   filterInfo: Record<string, string[]>;
 }
+
 export function useDataSource(
   propsRef: ComputedRef<BasicTableProps>,
   {
@@ -38,13 +39,13 @@ export function useDataSource(
     setLoading,
     getFieldsValue,
     clearSelectedRowKeys,
-    tableData,
+    tableData
   }: ActionType,
-  emit: EmitType,
+  emit: EmitType
 ) {
   const searchState = reactive<SearchState>({
     sortInfo: {},
-    filterInfo: {},
+    filterInfo: {}
   });
   const dataSourceRef = ref<Recordable[]>([]);
   const rawDataSourceRef = ref<Recordable>({});
@@ -60,14 +61,14 @@ export function useDataSource(
       !api && dataSource && (dataSourceRef.value = dataSource);
     },
     {
-      immediate: true,
-    },
+      immediate: true
+    }
   );
 
   function handleTableChange(
     pagination: PaginationProps,
     filters: Partial<Recordable<string[]>>,
-    sorter: SorterResult,
+    sorter: SorterResult
   ) {
     const { clearSelectOnPageChange, sortFn, filterFn } = unref(propsRef);
     if (clearSelectOnPageChange) {
@@ -148,7 +149,7 @@ export function useDataSource(
 
   function updateTableDataRecord(
     rowKey: string | number,
-    record: Recordable,
+    record: Recordable
   ): Recordable | undefined {
     const row = findTableDataRecord(rowKey);
 
@@ -168,7 +169,7 @@ export function useDataSource(
     for (const key of rowKeys) {
       let index: number | undefined = dataSourceRef.value.findIndex((row) => {
         let targetKeyName: string;
-        if (typeof rowKeyName === 'function') {
+        if (typeof rowKeyName === "function") {
           targetKeyName = rowKeyName(row);
         } else {
           targetKeyName = rowKeyName as string;
@@ -180,18 +181,18 @@ export function useDataSource(
       }
       index = unref(propsRef).dataSource?.findIndex((row) => {
         let targetKeyName: string;
-        if (typeof rowKeyName === 'function') {
+        if (typeof rowKeyName === "function") {
           targetKeyName = rowKeyName(row);
         } else {
           targetKeyName = rowKeyName as string;
         }
         return row[targetKeyName] === key;
       });
-      if (typeof index !== 'undefined' && index !== -1)
+      if (typeof index !== "undefined" && index !== -1)
         unref(propsRef).dataSource?.splice(index, 1);
     }
     setPagination({
-      total: unref(propsRef).dataSource?.length,
+      total: unref(propsRef).dataSource?.length
     });
   }
 
@@ -208,12 +209,12 @@ export function useDataSource(
     const rowKeyName = unref(getRowKey);
     if (!rowKeyName) return;
 
-    const { childrenColumnName = 'children' } = unref(propsRef);
+    const { childrenColumnName = "children" } = unref(propsRef);
 
     const findRow = (array: any[]) => {
       let ret;
       array.some(function iter(r) {
-        if (typeof rowKeyName === 'function') {
+        if (typeof rowKeyName === "function") {
           if ((rowKeyName(r) as string) === rowKey) {
             ret = r;
             return true;
@@ -248,7 +249,7 @@ export function useDataSource(
       beforeFetch,
       afterFetch,
       useSearchForm,
-      pagination,
+      pagination
     } = unref(propsRef);
     if (!api || !isFunction(api)) return;
     try {
@@ -256,7 +257,7 @@ export function useDataSource(
       const { pageField, sizeField, listField, totalField } = Object.assign(
         {},
         FETCH_SETTING,
-        fetchSetting,
+        fetchSetting
       );
       let pageParams: Recordable = {};
 
@@ -280,7 +281,7 @@ export function useDataSource(
         sortInfo,
         filterInfo,
         opt?.sortInfo ?? {},
-        opt?.filterInfo ?? {},
+        opt?.filterInfo ?? {}
       );
       if (beforeFetch && isFunction(beforeFetch)) {
         params = (await beforeFetch(params)) || params;
@@ -288,18 +289,30 @@ export function useDataSource(
 
       const res = await api(params);
       rawDataSourceRef.value = res;
-
-      const isArrayResult = Array.isArray(res);
+      /** 2022/3/29
+       *作者:pzt
+       *内容:修改表格原始数据
+       **/
+      /*const isArrayResult = Array.isArray(res);
 
       let resultItems: Recordable[] = isArrayResult ? res : get(res, listField);
-      const resultTotal: number = isArrayResult ? res.length : get(res, totalField);
-
+      const resultTotal: number = isArrayResult ? res.length : get(res, totalField);*/
+      let resultItems: Recordable[] = [];
+      let resultTotal = 0;
+      if (res.page) {
+        resultItems = res.page.items;
+        resultTotal = res.page.total;
+      }
+      if (res.items) {
+        resultItems = res.items;
+        resultTotal = res.items.length;
+      }
       // 假如数据变少，导致总页数变少并小于当前选中页码，通过getPaginationRef获取到的页码是不正确的，需获取正确的页码再次执行
       if (resultTotal) {
         const currentTotalPage = Math.ceil(resultTotal / pageSize);
         if (current > currentTotalPage) {
           setPagination({
-            current: currentTotalPage,
+            current: currentTotalPage
           });
           return await fetch(opt);
         }
@@ -310,23 +323,23 @@ export function useDataSource(
       }
       dataSourceRef.value = resultItems;
       setPagination({
-        total: resultTotal || 0,
+        total: resultTotal || 0
       });
       if (opt && opt.page) {
         setPagination({
-          current: opt.page || 1,
+          current: opt.page || 1
         });
       }
-      emit('fetch-success', {
+      emit("fetch-success", {
         items: unref(resultItems),
-        total: resultTotal,
+        total: resultTotal
       });
       return resultItems;
     } catch (error) {
-      emit('fetch-error', error);
+      emit("fetch-error", error);
       dataSourceRef.value = [];
       setPagination({
-        total: 0,
+        total: 0
       });
     } finally {
       setLoading(false);
@@ -369,6 +382,6 @@ export function useDataSource(
     deleteTableDataRecord,
     insertTableDataRecord,
     findTableDataRecord,
-    handleTableChange,
+    handleTableChange
   };
 }

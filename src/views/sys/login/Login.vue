@@ -21,9 +21,9 @@
               src="../../../assets/svg/login-box-bg.svg"
               class="w-1/2 -mt-16 -enter-x"
             />
-            <div class="mt-10 font-medium text-white -enter-x">
+            <!--  <div class="mt-10 font-medium text-white -enter-x">
               <span class="inline-block mt-4 text-3xl"> {{ t('sys.login.signInTitle') }}</span>
-            </div>
+            </div> -->
             <div class="mt-5 font-normal text-white text-md dark:text-gray-500 -enter-x">
               {{ t('sys.login.signInDesc') }}
             </div>

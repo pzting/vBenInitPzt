@@ -125,7 +125,11 @@ export const useUserStore = defineStore({
     async getUserInfoAction(): Promise<UserInfo | null> {
       if (!this.getToken) return null;
       const userInfo = await getUserInfo();
-      const { roles = [] } = userInfo;
+      /** 2022/3/29
+       *作者:pzt
+       *内容:修改权限字段
+       **/
+      /*const { roles = [] } = userInfo;
       if (isArray(roles)) {
         const roleList = roles.map((item) => item.value) as RoleEnum[];
         this.setRoleList(roleList);
@@ -133,6 +137,15 @@ export const useUserStore = defineStore({
         userInfo.roles = [];
         this.setRoleList([]);
       }
+      */
+      const {auths = []} = userInfo;
+      if (isArray(auths)) {
+        this.setRoleList(auths);
+      } else {
+        userInfo.auths = [];
+        this.setRoleList([]);
+      }
+      userInfo.realName = userInfo.name || userInfo.realName;
       this.setUserInfo(userInfo);
       return userInfo;
     },
