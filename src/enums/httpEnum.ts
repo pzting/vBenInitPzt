@@ -4,18 +4,23 @@
 export enum ResultEnum {
   SUCCESS = 0,
   ERROR = 1,
-  TIMEOUT = 401,
-  TYPE = 'success',
+  // TIMEOUT = 401,
+  /** 2022/3/31
+   *作者:pzt
+   *内容:修改状态
+   **/
+  TIMEOUT = 50008,
+  TYPE = "success",
 }
 
 /**
  * @description: request method
  */
 export enum RequestEnum {
-  GET = 'GET',
-  POST = 'POST',
-  PUT = 'PUT',
-  DELETE = 'DELETE',
+  GET = "GET",
+  POST = "POST",
+  PUT = "PUT",
+  DELETE = "DELETE",
 }
 
 /**
@@ -23,9 +28,9 @@ export enum RequestEnum {
  */
 export enum ContentTypeEnum {
   // json
-  JSON = 'application/json;charset=UTF-8',
+  JSON = "application/json;charset=UTF-8",
   // form-data qs
-  FORM_URLENCODED = 'application/x-www-form-urlencoded;charset=UTF-8',
+  FORM_URLENCODED = "application/x-www-form-urlencoded;charset=UTF-8",
   // form-data  upload
-  FORM_DATA = 'multipart/form-data;charset=UTF-8',
+  FORM_DATA = "multipart/form-data;charset=UTF-8",
 }

@@ -178,6 +178,7 @@ async function handleLogin() {
       getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body
     });
   } finally {
+    handleImageVC();
     loading.value = false;
   }
 }
