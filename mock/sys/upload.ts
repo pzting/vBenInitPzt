@@ -13,5 +13,15 @@ export default [
     response: () => {
       return resultSuccess({ fileNo: `fileNo${new Date().toLocaleString()}` });
     }
+  },
+  {
+    url: "/basic-api/file/getUrl",
+    timeout: 100,
+    method: "post",
+    response: () => {
+      return resultSuccess({
+        url: "https://v-cdn.zjol.com.cn/280443.mp4"
+      });
+    }
   }
 ] as MockMethod[];

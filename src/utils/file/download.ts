@@ -1,5 +1,6 @@
 import { openWindow } from "..";
 import { dataURLtoBlob, urlToBase64 } from "./base64Conver";
+import { getToken } from "/@/utils/auth";
 
 /** 2022/3/30
  *作者:pzt
@@ -11,7 +12,7 @@ export function postExcelFile(params, url) {
     const publicPath = "/";
     const form = document.createElement("form");
     form.style.display = "none";
-    form.action = publicPath + url;
+    form.action = publicPath + url + "?Z-MCS-TOKEN=" + getToken();
     form.method = "post";
     document.body.appendChild(form);
 

@@ -26,7 +26,6 @@
 
     <div class="upload-modal-toolbar">
       <Alert :message="getHelpText" type="info" banner class="upload-modal-toolbar__text" />
-
       <Upload
         :accept="getStringAccept"
         :multiple="multiple"
@@ -34,7 +33,7 @@
         :show-upload-list="false"
         class="upload-modal-toolbar__btn"
       >
-        <a-button type="primary">
+        <a-button :disabled="fileListRef.length>=maxNumber" type="primary">
           {{ t("component.upload.choose") }}
         </a-button>
       </Upload>
@@ -174,6 +173,7 @@ export default defineComponent({
     // }
 
     async function uploadApiByItem(item: FileItem) {
+      debugger
       const { api } = props;
       if (!api || !isFunction(api)) {
         return warn("upload api must exist and be a function");
@@ -213,23 +213,35 @@ export default defineComponent({
     // 点击开始上传
     async function handleStartUpload() {
       const { maxNumber } = props;
-      if ((fileListRef.value.length + props.previewFileList?.length ?? 0) > maxNumber) {
+      /** 2022/4/1
+       *作者:pzt
+       *内容:去掉预览
+       **/
+      /*if ((fileListRef.value.length + props.previewFileList?.length ?? 0) > maxNumber) {
+        return createMessage.warning(t("component.upload.maxNumber", [maxNumber]));
+      }*/
+      if (fileListRef.value.length > maxNumber) {
         return createMessage.warning(t("component.upload.maxNumber", [maxNumber]));
       }
+      console.log(fileListRef.value, "fileListRef.value");
       try {
         isUploadingRef.value = true;
+        /** 2022/4/6
+         *作者:pzt
+         *内容:上传所有的
+         **/
         // 只上传不是成功状态的
-        const uploadFileList =
-          fileListRef.value.filter((item) => item.status !== UploadResultStatus.SUCCESS) || [];
-        const data = await Promise.all(
-          uploadFileList.map((item) => {
+        /* const uploadFileList =
+           fileListRef.value.filter((item) => item.status !== UploadResultStatus.SUCCESS) || [];*/
+        await Promise.all(
+          fileListRef.value.map((item) => {
             return uploadApiByItem(item);
           })
         );
         isUploadingRef.value = false;
         // 生产环境:抛出错误
-        const errorList = data.filter((item: any) => !item.success);
-        if (errorList.length > 0) throw errorList;
+        /*const errorList = data.filter((item: any) => !item.success);
+        if (errorList.length > 0) throw errorList;*/
       } catch (e) {
         isUploadingRef.value = false;
         throw e;
@@ -257,6 +269,8 @@ export default defineComponent({
            **/
           // fileList.push(responseData.url);
           fileList.push(responseData.fileNo);
+          // console.log(item, "item");
+          // fileList.push(item);
         }
       }
       // 存在一个上传成功的即可保存

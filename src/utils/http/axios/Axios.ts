@@ -148,8 +148,10 @@ export class VAxios {
         formData.append(key, params.data![key]);
       });
     }*/
-
+    console.log(getToken(), "getToken()");
+    console.log(config, "config");
     return this.axiosInstance.request<T>({
+      // return this.request<T>({
       ...config,
       method: "POST",
       data: formData,
@@ -160,7 +162,7 @@ export class VAxios {
          *内容:增加格式
          **/
         "X-Requested-With": "XMLHttpRequest",
-        "Z-MCS-TOKEN": getToken()
+        "Z-MCS-TOKEN": `${getToken()}`
         // @ts-ignore
         // ignoreCancelToken: true,
       }

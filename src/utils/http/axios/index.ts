@@ -76,7 +76,8 @@ const transform: AxiosTransform = {
           timeoutMsg = message || msg;
         }
     }
-
+    console.log(timeoutMsg, "timeoutMsg");
+    console.log(options, "options");
     // errorMessageMode=‘modal’的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
     // errorMessageMode='none' 一般是调用时明确表示不希望自动弹出错误提示
     if (options.errorMessageMode === "modal") {
@@ -84,7 +85,9 @@ const transform: AxiosTransform = {
     } else if (options.errorMessageMode === "message") {
       createMessage.error(timeoutMsg);
     }
-
+    if (code == 500) {
+      // createErrorModal({ title: t("sys.api.errorTip"), content: data.msg });
+    }
     throw new Error(timeoutMsg || t("sys.api.apiRequestFailed"));
   },
 
@@ -170,7 +173,7 @@ const transform: AxiosTransform = {
     errorLogStore.addAjaxErrorInfo(error);
     const { response, code, msg: message, config } = error || {};
     const errorMessageMode = config?.requestOptions?.errorMessageMode || "none";
-    const msg: string = response?.data?.error?.message ?? "";
+    const msg: string = response?.data?.error?.message || response?.data?.error;
     const err: string = error?.toString?.() ?? "";
     let errMessage = "";
 
@@ -193,7 +196,6 @@ const transform: AxiosTransform = {
     } catch (error) {
       throw new Error(error as unknown as string);
     }
-
     checkStatus(error?.response?.status, msg, errorMessageMode);
 
     // 添加自动重试机制 保险起见 只针对GET请求

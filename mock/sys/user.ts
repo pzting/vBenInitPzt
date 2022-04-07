@@ -43,7 +43,7 @@ export function createFakeUserList() {
       avatar: "https://q1.qlogo.cn/g?b=qq&nk=339449197&s=640",
       desc: "adminer",
       token: "fakeToken4",
-      homePath: "/system/role",
+      homePath: "/business/insurance",
       auths: ["pzt", "czwk", "admin"]
     }
   ];
@@ -66,7 +66,7 @@ export default [
         (item) => item.username === username && password === item.password
       );
       if (!checkUser) {
-        return resultError("Incorrect account or password！");
+        return resultError("Incorrect employee or password！");
       }
       const { userId, username: _username, token, realName, desc, roles } = checkUser;
       return resultSuccess({
@@ -198,6 +198,8 @@ export default [
         },
         { message: "Token has been destroyed" }
       );
+
+      // return resultError("错误", { code: 50008 });
     }
   }
 ] as MockMethod[];
