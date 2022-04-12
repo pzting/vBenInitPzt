@@ -50,7 +50,7 @@ const transform: AxiosTransform = {
       throw new Error(t("sys.api.apiRequestFailed"));
     }
     //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
-    const { code, result, message } = data;
+    const { code, result, message, msg } = data;
     // 这里逻辑可以根据项目进行修改
     const hasSuccess = data && Reflect.has(data, "code") && code === ResultEnum.SUCCESS;
     if (hasSuccess) {
@@ -72,11 +72,12 @@ const transform: AxiosTransform = {
         userStore.logout(true);
         break;
       default:
-        if (message) {
-          timeoutMsg = message;
+        if (message || msg) {
+          timeoutMsg = message || msg;
         }
     }
-
+    console.log(timeoutMsg, "timeoutMsg");
+    console.log(options, "options");
     // errorMessageMode=‘modal’的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
     // errorMessageMode='none' 一般是调用时明确表示不希望自动弹出错误提示
     if (options.errorMessageMode === "modal") {
@@ -84,7 +85,9 @@ const transform: AxiosTransform = {
     } else if (options.errorMessageMode === "message") {
       createMessage.error(timeoutMsg);
     }
-
+    if (code == 500) {
+      // createErrorModal({ title: t("sys.api.errorTip"), content: data.msg });
+    }
     throw new Error(timeoutMsg || t("sys.api.apiRequestFailed"));
   },
 
@@ -148,7 +151,9 @@ const transform: AxiosTransform = {
       (config as Recordable).headers.Authorization = options.authenticationScheme
         ? `${options.authenticationScheme} ${token}`
         : token;
+      config.headers["Z-MCS-TOKEN"] = token;
     }
+    config.headers["X-Requested-With"] = "XMLHttpRequest";
     return config;
   },
 
@@ -166,9 +171,9 @@ const transform: AxiosTransform = {
     const { t } = useI18n();
     const errorLogStore = useErrorLogStoreWithOut();
     errorLogStore.addAjaxErrorInfo(error);
-    const { response, code, message, config } = error || {};
+    const { response, code, msg: message, config } = error || {};
     const errorMessageMode = config?.requestOptions?.errorMessageMode || "none";
-    const msg: string = response?.data?.error?.message ?? "";
+    const msg: string = response?.data?.error?.message || response?.data?.error;
     const err: string = error?.toString?.() ?? "";
     let errMessage = "";
 
@@ -191,7 +196,6 @@ const transform: AxiosTransform = {
     } catch (error) {
       throw new Error(error as unknown as string);
     }
-
     checkStatus(error?.response?.status, msg, errorMessageMode);
 
     // 添加自动重试机制 保险起见 只针对GET请求

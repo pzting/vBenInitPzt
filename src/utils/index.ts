@@ -1,10 +1,40 @@
-import type { RouteLocationNormalized, RouteRecordNormalized } from 'vue-router';
-import type { App, Plugin } from 'vue';
+import type { RouteLocationNormalized, RouteRecordNormalized } from "vue-router";
+import type { App, Plugin } from "vue";
 
-import { unref } from 'vue';
-import { isObject } from '/@/utils/is';
+import { unref } from "vue";
+import { isObject } from "/@/utils/is";
 
-export const noop = () => {};
+export const noop = () => {
+};
+
+
+/** 2022/3/30
+ *作者:pzt
+ *内容:过滤树节点id
+ **/
+export function filterSelectTreeId(arr1, keys) {
+  let data: any = { id: "", arr: [] };
+  try {
+    arr1.forEach((arr2) => {
+      if (arr2.children.length > 0) {
+        arr2.children.forEach((arr3) => {
+          if (arr3.children.length > 0) {
+            arr3.children.forEach((item) => {
+              if (keys.includes(item.id)) {
+                data.id = arr2.id;
+                data.arr.push(item.id);
+                // throw new Error('12');
+              }
+            });
+          }
+        });
+      }
+    });
+  } catch (e) {
+    console.log(e);
+  }
+  return data;
+}
 
 /**
  * @description:  Set ui mount node
@@ -24,12 +54,12 @@ export function getPopupContainer(node?: HTMLElement): HTMLElement {
  *  ==>www.baidu.com?a=3&b=4
  */
 export function setObjToUrlParams(baseUrl: string, obj: any): string {
-  let parameters = '';
+  let parameters = "";
   for (const key in obj) {
-    parameters += key + '=' + encodeURIComponent(obj[key]) + '&';
+    parameters += key + "=" + encodeURIComponent(obj[key]) + "&";
   }
-  parameters = parameters.replace(/&$/, '');
-  return /\?$/.test(baseUrl) ? baseUrl + parameters : baseUrl.replace(/\/?$/, '?') + parameters;
+  parameters = parameters.replace(/&$/, "");
+  return /\?$/.test(baseUrl) ? baseUrl + parameters : baseUrl.replace(/\/?$/, "?") + parameters;
 }
 
 export function deepMerge<T = any>(src: any = {}, target: any = {}): T {
@@ -42,15 +72,15 @@ export function deepMerge<T = any>(src: any = {}, target: any = {}): T {
 
 export function openWindow(
   url: string,
-  opt?: { target?: TargetContext | string; noopener?: boolean; noreferrer?: boolean },
+  opt?: { target?: TargetContext | string; noopener?: boolean; noreferrer?: boolean }
 ) {
-  const { target = '__blank', noopener = true, noreferrer = true } = opt || {};
+  const { target = "__blank", noopener = true, noreferrer = true } = opt || {};
   const feature: string[] = [];
 
-  noopener && feature.push('noopener=yes');
-  noreferrer && feature.push('noreferrer=yes');
+  noopener && feature.push("noopener=yes");
+  noreferrer && feature.push("noreferrer=yes");
 
-  window.open(url, target, feature.join(','));
+  window.open(url, target, feature.join(","));
 }
 
 // dynamic use hook props
@@ -71,11 +101,11 @@ export function getRawRoute(route: RouteLocationNormalized): RouteLocationNormal
     ...opt,
     matched: (matched
       ? matched.map((item) => ({
-          meta: item.meta,
-          name: item.name,
-          path: item.path,
-        }))
-      : undefined) as RouteRecordNormalized[],
+        meta: item.meta,
+        name: item.name,
+        path: item.path
+      }))
+      : undefined) as RouteRecordNormalized[]
   };
 }
 
