@@ -30,8 +30,9 @@
           v-model:value="model[field]"
           :fieldNames="{ title: 'authName', key: 'authId' }"
           :treeData="treeData"
+          :toolbar="false"
           checkable
-          title="菜单分配"
+          title=""
           toolbar
         />
       </template>
@@ -47,6 +48,7 @@ import { BasicTree, TreeItem } from "/@/components/Tree";
 import { Select } from "ant-design-vue";
 import { useDebounceFn } from "@vueuse/core";
 import { authorityTree, dataAuthList, roleDataIds, roleAuthIds } from "/@/api/system";
+import { title } from "/@/hooks/web/useI18n";
 
 export default defineComponent({
   name: "RoleDrawer",
@@ -77,6 +79,7 @@ export default defineComponent({
       // 菜单页面权限列表
       const tree = await authorityTree({});
       treeData.value = tree.items;
+      id.value = "";
       // 编辑操作
       if (unref(isUpdate)) {
         const dataIdsRes = await roleDataIds({ roleId: data?.record.roleId });
@@ -88,10 +91,9 @@ export default defineComponent({
           authIds: authIdsRes.items
         });
       }
-
     });
 
-    const getTitle = computed(() => (!unref(isUpdate) ? "新增" : "编辑"));
+    const getTitle = computed(() => (!unref(isUpdate) ? title("basic.add") : title("basic.edit")));
 
     async function handleSubmit() {
       try {

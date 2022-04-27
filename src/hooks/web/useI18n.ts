@@ -1,4 +1,4 @@
-import { i18n } from '/@/locales/setupI18n';
+import { i18n } from "/@/locales/setupI18n";
 
 type I18nGlobalTranslation = {
   (key: string): string;
@@ -27,7 +27,7 @@ export function useI18n(namespace?: string): {
   const normalFn = {
     t: (key: string) => {
       return getKey(namespace, key);
-    },
+    }
   };
 
   if (!i18n) {
@@ -37,13 +37,13 @@ export function useI18n(namespace?: string): {
   const { t, ...methods } = i18n.global;
 
   const tFn: I18nGlobalTranslation = (key: string, ...arg: any[]) => {
-    if (!key) return '';
-    if (!key.includes('.') && !namespace) return key;
+    if (!key) return "";
+    if (!key.includes(".") && !namespace) return key;
     return t(getKey(namespace, key), ...(arg as I18nTranslationRestParameters));
   };
   return {
     ...methods,
-    t: tFn,
+    t: tFn
   };
 }
 
@@ -53,3 +53,11 @@ export function useI18n(namespace?: string): {
 // 为什么要编写此函数？
 // 主要用于配合vscode i18nn ally插件。此功能仅用于路由和菜单。请在其他地方使用useI18n
 export const t = (key: string) => key;
+
+/** 2022/4/27
+ *作者:pzt
+ *内容:搞一个快捷的吧
+ **/
+export const title = (key) => {
+  return useI18n().t(key);
+};

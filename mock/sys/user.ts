@@ -43,7 +43,7 @@ export function createFakeUserList() {
       avatar: "https://q1.qlogo.cn/g?b=qq&nk=339449197&s=640",
       desc: "adminer",
       token: "fakeToken4",
-      homePath: "/business/insurance",
+      // homePath: "/business/insurance",
       auths: ["pzt", "czwk", "admin"]
     }
   ];

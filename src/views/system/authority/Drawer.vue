@@ -9,7 +9,7 @@
   >
     <BasicForm @register="registerForm">
       <!--      权限点-->
-      <template #authIds="{ model, field }">
+      <template #authPointIds="{ model, field }">
         <BasicTree
           v-model:value="model[field]"
           :fieldNames="{ title: 'authPointName', key: 'authPointId' }"
@@ -37,6 +37,7 @@ export default defineComponent({
   setup(_, { emit }) {
     const isUpdate = ref(true);
     const title = ref("");
+    const id = ref("");
     const keys = ref([]);
     const treeData = ref([]);
     const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
@@ -53,14 +54,15 @@ export default defineComponent({
       setDrawerProps({ confirmLoading: false });
       isUpdate.value = !!data?.isUpdate;
       title.value = data?.title;
+      id.value = data?.record?.authId;
 
       const tree = await authorityPointTree({});
       treeData.value = tree.items;
       if (unref(isUpdate)) {
-        const authIdsRes = await authorityIds({ authId: data.record.authId });
+        const authPointIdsRes = await authorityIds({ authId: data.record.authId });
         setFieldsValue({
           ...data.record,
-          authIds: authIdsRes.items
+          authPointIds: authPointIdsRes.items
         });
       }
     });
@@ -71,7 +73,7 @@ export default defineComponent({
         setDrawerProps({ confirmLoading: true });
         // TODO custom api
         closeDrawer();
-        emit("success", { ...values, authPointIds: keys.value });
+        emit("success", { ...values, authId: id.value });
       } finally {
         setDrawerProps({ confirmLoading: false });
       }

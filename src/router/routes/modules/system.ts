@@ -22,13 +22,13 @@ const system: AppRouteModule = {
   },
   children: [
     /*{
-      path: "account",
+      path: "employee",
       name: "AccountManagement",
       meta: {
-        title: t("routes.demo.system.account"),
+        title: t("routes.demo.system.employee"),
         ignoreKeepAlive: false
       },
-      component: () => import("/@/views/demo/system/account/index.vue")
+      component: () => import("/@/views/demo/system/employee/index.vue")
     },*/
     {
       path: "role",

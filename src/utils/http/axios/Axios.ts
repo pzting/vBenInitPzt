@@ -122,19 +122,22 @@ export class VAxios {
    * @description:  File Upload
    */
   uploadFile<T = any>(config: AxiosRequestConfig, params: UploadFileParams) {
-    const formData = new window.FormData();
-    const customFilename = params.name || "file";
+    // const formData = new window.FormData();
+    const formData = new FormData();
+    // const customFilename = params.name || "file";
 
-    if (params.filename) {
+    /*if (params.filename) {
       formData.append(customFilename, params.file, params.filename);
     } else {
       formData.append(customFilename, params.file);
-    }
+    }*/
     /** 2022/3/29
      *作者:pzt
      *内容:修改上传格式
      **/
-    formData.append("fileName", params.file?.name);
+    // formData.append("fileName", params.file?.name);
+    formData.append("file", params.file);
+    formData.append("fileName", `${params.filename}`);
     /*if (params.data) {
       Object.keys(params.data).forEach((key) => {
         const value = params.data![key];
@@ -150,6 +153,10 @@ export class VAxios {
     }*/
     console.log(getToken(), "getToken()");
     console.log(config, "config");
+    console.log(params, "params");
+    console.log(formData, "formData");
+    console.log(formData.get("file"), "formData-file");
+    console.log(formData.get("fileName"), "formData-fileName");
     return this.axiosInstance.request<T>({
       // return this.request<T>({
       ...config,
@@ -166,6 +173,8 @@ export class VAxios {
         // @ts-ignore
         // ignoreCancelToken: true,
       }
+    }).catch(async (e) => {
+      console.log(e, "axiosInstance.request出错");
     });
   }
 

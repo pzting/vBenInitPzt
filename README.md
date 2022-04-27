@@ -1,6 +1,7 @@
+
 ## 安装使用
 
-- 获取项目代码1.0.0为项目初始化版本
+- 获取项目代码
 
 ```bash
 git clone https://github.com/anncwb/vue-vben-admin.git
@@ -9,7 +10,7 @@ git clone https://github.com/anncwb/vue-vben-admin.git
 - 安装依赖
 
 ```bash
-cd vue-vben-admin
+cd ManageSrvFrontUI
 
 pnpm install
 
@@ -26,3 +27,5 @@ pnpm serve
 ```bash
 pnpm build
 ```
+## 2.0.0
+直接复制过来，增加了英语

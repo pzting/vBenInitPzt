@@ -49,6 +49,7 @@ export default defineComponent({
     const [registerTable, { reload, expandAll }] = useTable({
       title: "权限列表",
       api: authorityTree,
+      rowKey: "authId",
       columns,
       formConfig: {
         labelWidth: 120,

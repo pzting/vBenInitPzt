@@ -6,6 +6,7 @@ enum Api {
    *内容:员工社保页面
    **/
   insurancePageApi = "/insurance/page",
+  insuranceListApi = "/insurance/list",
   insuranceDetailPageApi = "/insurance/detailPage",
   insuranceMonthPayPageApi = "/insurance/monthPay",
   insuranceMonthDetailPageApi = "/insurance/monthDetail",
@@ -13,6 +14,9 @@ enum Api {
   insuranceExportApi = "/insurance/export",
   insuranceUpBillApi = "/insurance/upBill",
   insuranceStatusChangeApi = "/insurance/statusChange",
+  insuranceDeleteApi = "/insurance/delete",
+  insurancePaidApi = "/insurance/paid",
+  insuranceReceivedApi = "/insurance/received",
 
   /** 2022/3/20
    *作者:pzt
@@ -28,6 +32,14 @@ enum Api {
   salaryConfirmApi = "/salary/confirm",
   salaryDeleteApi = "/salary/delete",
   salaryPaidApi = "/salary/paid",
+  salaryListApi = "/salary/list",
+
+  /** 2022/4/7
+   *作者:pzt
+   *内容:工资单统计页面
+   **/
+  salaryTotalPageApi = "/salary/totalPage",
+  salaryTotalDetailApi = "/salary/totalDetail",
 
   /** 2022/3/21
    *作者:pzt
@@ -51,6 +63,8 @@ export const insuranceMonthDetailPage = (params) =>
   defHttp.post({ url: Api.insuranceMonthDetailPageApi, params });
 export const getPageList = (params) =>
   defHttp.post({ url: Api.insurancePageApi, params });
+export const insuranceList = (params) =>
+  defHttp.post({ url: Api.insuranceListApi, params });
 export const insuranceImport = (params) =>
   defHttp.post({ url: Api.insuranceImportApi, params });
 export const insuranceExport = (params) =>
@@ -59,6 +73,12 @@ export const insuranceUpBill = (params) =>
   defHttp.post({ url: Api.insuranceUpBillApi, params });
 export const insuranceStatusChange = (params) =>
   defHttp.post({ url: Api.insuranceStatusChangeApi, params });
+export const insuranceDelete = (params) =>
+  defHttp.post({ url: Api.insuranceDeleteApi, params });
+export const insurancePaid = (params) =>
+  defHttp.post({ url: Api.insurancePaidApi, params });
+export const insuranceReceived = (params) =>
+  defHttp.post({ url: Api.insuranceReceivedApi, params });
 
 
 /** 2022/3/20
@@ -85,6 +105,18 @@ export const salaryDetailPage = (params) =>
   defHttp.post({ url: Api.salaryDetailPageApi, params }, { errorMessageMode: "message" });
 export const salaryDetailSave = (params) =>
   defHttp.post({ url: Api.salaryDetailSaveApi, params }, { errorMessageMode: "message" });
+export const salaryList = (params) =>
+  defHttp.post({ url: Api.salaryListApi, params }, { errorMessageMode: "message" });
+
+
+/** 2022/4/7
+ *作者:pzt
+ *内容:工资单统计页面
+ **/
+export const salaryTotalPage = (params) =>
+  defHttp.post({ url: Api.salaryTotalPageApi, params }, { errorMessageMode: "message" });
+export const salaryTotalDetail = (params) =>
+  defHttp.post({ url: Api.salaryTotalDetailApi, params }, { errorMessageMode: "message" });
 
 /** 2022/3/21
  *作者:pzt

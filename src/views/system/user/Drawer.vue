@@ -18,19 +18,22 @@
               />
             </template>-->
       <template #roleIds="{ model, field }">
+        <!--
+          showSearch
+          @search="onSearch"
+           :params="searchParams"
+         -->
         <ApiSelect
           :api="roleAll"
-          showSearch
           v-model:value="model[field]"
           :filterOption="false"
           resultField="items"
           labelField="roleName"
           valueField="roleId"
           mode="multiple"
-          :params="searchParams"
-          @search="onSearch"
-          placeholder="请选择"
+
         />
+        <!--        placeholder="请选择"-->
       </template>
     </BasicForm>
   </BasicDrawer>
@@ -44,6 +47,7 @@ import { BasicTree } from "/@/components/Tree";
 import { Select } from "ant-design-vue";
 import { useDebounceFn } from "@vueuse/core";
 import { userRoles, roleAll } from "/@/api/system";
+import { title } from "/@/hooks/web/useI18n";
 
 export default defineComponent({
   name: "UserDrawer",
@@ -58,7 +62,12 @@ export default defineComponent({
     const searchParams = computed<Recordable>(() => {
       return { keyword: unref(keyword) };
     });
-    const [registerForm, { resetFields, setFieldsValue, setProps, validate }] = useForm({
+    const [registerForm, {
+      resetFields,
+      setFieldsValue,
+      setProps,
+      validate
+    }] = useForm({
       labelWidth: 120,
       schemas: formSchema,
       showActionButtonGroup: false,
@@ -88,9 +97,9 @@ export default defineComponent({
             value: item.roleId
           };
         });*/
-
+      id.value = "";
       if (unref(isUpdate)) {
-        const res = await userRoles({ roleId: data?.record?.roleId });
+        const res = await userRoles({ userId: data?.record?.id });
         roleIds.value = res.roles.map((item) => item.roleId);
         id.value = data?.record?.id;
 
@@ -101,14 +110,14 @@ export default defineComponent({
       }
     });
 
-    const getTitle = computed(() => (!unref(isUpdate) ? "新增" : "编辑"));
+    const getTitle = computed(() => (!unref(isUpdate) ? title("basic.add") : title("basic.edit")));
 
     async function handleSubmit() {
       try {
         const values = await validate();
         setDrawerProps({ confirmLoading: true });
         // TODO custom api
-        console.log(values);
+        console.log(values, "values");
         closeDrawer();
         emit("success", { ...values, id: id.value });
       } finally {

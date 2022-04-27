@@ -2,7 +2,7 @@
   <div>
     <BasicTable @register="registerTable">
       <template #toolbar>
-        <a-button type="primary" @click="handleCreate"> 新增</a-button>
+        <a-button type="primary" @click="handleCreate"> {{ title("basic.add") }}</a-button>
       </template>
       <template #bodyCell="{ column,record }">
         <template v-if="column.key === 'action'">
@@ -10,14 +10,15 @@
             :actions="[
             {
               icon: 'clarity:note-edit-line',
+              tooltip: title('basic.edit'),
               onClick: handleEdit.bind(null, record),
             },
             {
               icon: 'ant-design:tool-outlined',
               color: 'error',
-              tooltip: '重置密码',
+              tooltip: title('system.user.resetPassword'),
               popConfirm: {
-                title: '是否重置密码为(abc123)？',
+                title: title('system.user.resetPasswordTip'),
                 confirm: handleDelete.bind(null, record),
               },
             },
@@ -37,7 +38,7 @@ import { userPage, userSave, userResetPwd } from "/@/api/system";
 
 import { useDrawer } from "/@/components/Drawer";
 import Drawer from "./Drawer.vue";
-
+import { title } from "/@/hooks/web/useI18n";
 import { columns, searchFormSchema } from "./index.data";
 
 export default defineComponent({
@@ -46,7 +47,6 @@ export default defineComponent({
   setup() {
     const [registerDrawer, { openDrawer }] = useDrawer();
     const [registerTable, { reload }] = useTable({
-      title: "用户列表",
       api: userPage,
       columns,
       formConfig: {
@@ -59,7 +59,7 @@ export default defineComponent({
       showIndexColumn: false,
       actionColumn: {
         width: 80,
-        title: "操作",
+        title: title("basic.action"),
         dataIndex: "action",
         key: "action"
         // slots: {customRender: 'action'},
@@ -80,9 +80,10 @@ export default defineComponent({
       });
     }
 
-    async function handleDelete(record: Recordable) {
-      await userResetPwd({ userId: record.id });
-      reload();
+    function handleDelete(record: Recordable) {
+      userResetPwd({ userId: record.id }).then(() => {
+        reload();
+      });
     }
 
     async function handleSuccess(data) {
@@ -94,6 +95,7 @@ export default defineComponent({
       registerTable,
       registerDrawer,
       handleCreate,
+      title,
       handleEdit,
       handleDelete,
       handleSuccess

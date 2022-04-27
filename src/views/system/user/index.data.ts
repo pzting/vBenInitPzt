@@ -1,14 +1,15 @@
 import { BasicColumn } from "/@/components/Table";
 import { FormSchema } from "/@/components/Table";
+import { title } from "/@/hooks/web/useI18n";
 
 export const columns: BasicColumn[] = [
   {
-    title: "登录账号",
+    title: title("system.user.account"),
     dataIndex: "accountName",
     width: 200
   },
   {
-    title: "用户姓名",
+    title: title("system.user.userName"),
     dataIndex: "username",
     width: 200
   }
@@ -18,7 +19,7 @@ export const columns: BasicColumn[] = [
 export const searchFormSchema: FormSchema[] = [
   {
     field: "accountName",
-    label: "登录账号",
+    label: title("system.user.account"),
     component: "Input",
     colProps: { span: 8 }
   }
@@ -27,26 +28,26 @@ export const searchFormSchema: FormSchema[] = [
 export const formSchema: FormSchema[] = [
   {
     field: "username",
-    label: "用户姓名",
+    label: title("system.user.userName"),
     required: true,
     component: "Input"
   },
   {
     field: "accountName",
-    label: "登录账号",
+    label: title("system.user.account"),
     required: true,
     component: "Input"
   },
   {
     field: "password",
-    label: "登录密码",
+    label: title("system.user.password"),
     required: true,
     component: "InputPassword"
   },
   {
     field: "roleIds",
     component: "Select",
-    label: "角色选择",
+    label: title("system.user.role"),
     slot: "roleIds",
     required: true
   }
@@ -54,14 +55,14 @@ export const formSchema: FormSchema[] = [
 export const formEditSchema: FormSchema[] = [
   {
     field: "username",
-    label: "用户姓名",
+    label: title("system.user.userName"),
     required: true,
     component: "Input"
   },
   {
     field: "roleIds",
     component: "Select",
-    label: "角色选择",
+    label: title("system.user.role"),
     slot: "roleIds",
     required: true
   }

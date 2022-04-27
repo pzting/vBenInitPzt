@@ -58,7 +58,8 @@
     </ARow> -->
 
     <FormItem class="enter-x">
-      <Button type="primary" size="large" block @click="handleLogin" :loading="loading">
+      <Button type="primary" size="large" block @click="handleLogin"
+              :loading="loading">
         {{ t("sys.login.loginButton") }}
       </Button>
       <!-- <Button size="large" class="mt-4 enter-x" block @click="handleRegister">
@@ -133,8 +134,8 @@ const loading = ref(false);
 const rememberMe = ref(false);
 
 const formData = reactive({
-  account: "pzt",
-  password: "s123456"
+  account: "",
+  password: ""
 });
 const imageUrl = ref("");
 const trackId = ref("");
@@ -151,6 +152,15 @@ async function handleImageVC() {
 }
 
 handleImageVC();
+// let a = process.env.NODE_ENV;
+// console.log(a, "a");
+// VITE_PUBLIC_DEVPATH
+// console.log(import.meta.env.VITE_PUBLIC_HOST);
+// console.log(import.meta.env.MODE, "import.meta.env.MODE");
+// console.log(import.meta.env.BASE_URL, "import.meta.env.BASE_URL");
+console.log(import.meta.env.PROD);
+console.log(import.meta.env.DEV);
+console.log(import.meta.env.MODE);
 
 async function handleLogin() {
   const data = await validForm();

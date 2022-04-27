@@ -78,7 +78,7 @@ const salaryPageList = (() => {
   const result: any[] = [];
   for (let index = 0; index < 20; index++) {
     result.push({
-      id: `${index}`,
+      // id: `${index}`,
       servicePay: `4323${index}`,
       contactPhone: `1332322${index}`,
       createUserName: "@cname()",
@@ -89,8 +89,24 @@ const salaryPageList = (() => {
       employeeNum: `23${index}`,
       salaryDate: "@datetime",
       insuranceDate: "@datetime",
+      payDate: "@datetime",
       taxPay: `43553${index}`,
-      "insuranceStatus|1": ["UNPAID", "PAID", "CONFIRMED"]
+      "salaryStatus|1": ["UNPAID", "PAID", "CONFIRMED"]
+    });
+  }
+  return result;
+})();
+const salaryTotalPageList = (() => {
+  const result: any[] = [];
+  for (let index = 0; index < 20; index++) {
+    result.push({
+      id: `${index}`,
+      enterpriseName: "@cword(5,8)",
+      payDate: "@datetime",
+      servicePay: `4323${index}`,
+      realSalaryPay: `23${index}`,
+      taxPay: `32${index}`,
+      totalPay: `3322${index}`
     });
   }
   return result;
@@ -198,7 +214,9 @@ export default [
     timeout: 500,
     method: "post",
     response: () => {
-      return resultSuccess(`${new Date().getTime()}  `);
+      return resultSuccess({
+        time: `${new Date().getTime()}`
+      });
     }
   },
   {
@@ -206,7 +224,9 @@ export default [
     timeout: 500,
     method: "post",
     response: () => {
-      return resultSuccess(`${new Date().getTime()}  `);
+      return resultSuccess({
+        time: `${new Date().getTime()}`
+      });
     }
   },
   {
@@ -214,7 +234,9 @@ export default [
     timeout: 500,
     method: "post",
     response: () => {
-      return resultSuccess(`${new Date().getTime()}  `);
+      return resultSuccess({
+        time: `${new Date().getTime()}`
+      });
     }
   },
   {
@@ -222,7 +244,21 @@ export default [
     timeout: 100,
     method: "post",
     response: () => {
-      return resultSuccess(`${new Date().getTime()}  `);
+      return resultSuccess({
+        time: `${new Date().getTime()}`
+      });
+    }
+  },
+  {
+    url: "/basic-api/insurance/delete",
+    timeout: 100,
+    method: "post",
+    response: () => {
+      return resultSuccess({
+        time: {
+          time: `${new Date().getTime()}`
+        }
+      });
     }
   },
 
@@ -259,7 +295,9 @@ export default [
     timeout: 100,
     method: "post",
     response: () => {
-      return resultSuccess(`${new Date().getTime()}  `);
+      return resultSuccess({
+        time: `${new Date().getTime()}`
+      });
     }
   },
   {
@@ -277,7 +315,9 @@ export default [
     timeout: 100,
     method: "post",
     response: () => {
-      return resultSuccess(`${new Date().getTime()}  `);
+      return resultSuccess({
+        time: `${new Date().getTime()}`
+      });
     }
   },
   {
@@ -285,7 +325,35 @@ export default [
     timeout: 100,
     method: "post",
     response: () => {
-      return resultSuccess(`${new Date().getTime()}  `);
+      return resultSuccess({
+        time: `${new Date().getTime()}`
+      });
+    }
+  },
+
+
+  /** 2022/4/7
+   *作者:pzt
+   *内容:工资单统计页面
+   **/
+  {
+    url: "/basic-api/salary/totalPage",
+    timeout: 100,
+    method: "post",
+    response: (res) => {
+      const { body } = res;
+      const { page = 1, pageSize = 20 } = body;
+      return resultPageSuccess(page, pageSize, salaryTotalPageList);
+    }
+  },
+  {
+    url: "/basic-api/salary/totalDetail",
+    timeout: 100,
+    method: "post",
+    response: (res) => {
+      const { body } = res;
+      const { page = 1, pageSize = 20 } = body;
+      return resultPageSuccess(page, pageSize, salaryPageList);
     }
   },
 
@@ -316,7 +384,9 @@ export default [
     timeout: 100,
     method: "post",
     response: () => {
-      return resultSuccess(`${new Date().getTime()}  `);
+      return resultSuccess({
+        time: `${new Date().getTime()}`
+      });
     }
   },
   {

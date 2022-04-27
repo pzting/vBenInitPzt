@@ -1,5 +1,6 @@
 import { BasicColumn } from "/@/components/Table";
 import { FormSchema } from "/@/components/Table";
+import { title } from "/@/hooks/web/useI18n";
 // import { h } from 'vue';
 // import { Switch } from 'ant-design-vue';
 // import { setRoleStatus } from '/@/api/demo/system';
@@ -7,7 +8,7 @@ import { FormSchema } from "/@/components/Table";
 
 export const columns: BasicColumn[] = [
   {
-    title: "角色名称",
+    title: title("system.role.roleName"),
     dataIndex: "roleName",
     width: 200
   }
@@ -48,7 +49,7 @@ export const columns: BasicColumn[] = [
 export const searchFormSchema: FormSchema[] = [
   {
     field: "roleNme",
-    label: "角色名称",
+    label: title("system.role.roleName"),
     component: "Input",
     colProps: { span: 8 }
   }
@@ -57,18 +58,18 @@ export const searchFormSchema: FormSchema[] = [
 export const formSchema: FormSchema[] = [
   {
     field: "roleName",
-    label: "角色名称",
+    label: title("system.role.roleName"),
     required: true,
     component: "Input"
   },
   {
-    label: "数据权限",
+    label: title("system.role.dataPermissions"),
     field: "dataAuthIds",
     slot: "dataAuthIds",
     component: "Select"
   },
   {
-    label: "页面权限",
+    label: title("system.role.pagePermissions"),
     field: "authIds",
     slot: "authIds",
     component: "Input"

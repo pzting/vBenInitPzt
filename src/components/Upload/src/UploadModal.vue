@@ -186,8 +186,8 @@ export default defineComponent({
               ...(props.uploadParams || {})
             },
             file: item.file,
-            name: props.name,
-            filename: props.filename
+            name: props.name || item.file.name,
+            filename: props.filename || item.file.name
           },
           function onUploadProgress(progressEvent: ProgressEvent) {
             const complete = ((progressEvent.loaded / progressEvent.total) * 100) | 0;

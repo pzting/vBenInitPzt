@@ -1,5 +1,6 @@
 <template>
   <PageWrapper contentClass="flex" contentFullHeight>
+    <!--    <div class="pt-4 m-4 desc-wrap">-->
     <BasicTable @register="registerTable" @fetch-success="onFetchSuccess">
       <template #toolbar>
         <a-button type="primary" @click="handleCreate"> 新增</a-button>
@@ -24,6 +25,7 @@
       </template>
     </BasicTable>
     <Drawer @register="registerDrawer" @success="handleSuccess" />
+    <!--    </div>-->
   </PageWrapper>
 </template>
 <script lang="ts">

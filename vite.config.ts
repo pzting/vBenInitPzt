@@ -68,7 +68,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
        *作者:pzt
        *内容:压缩代码
        **/
-      sourcemap: false,
+      sourcemap: true,
       target: "es2015",
       cssTarget: "chrome80",
       outDir: OUTPUT_DIR,

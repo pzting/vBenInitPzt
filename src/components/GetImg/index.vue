@@ -25,11 +25,13 @@ export default defineComponent({
       const { url } = await fileGetUrl({
         fileNo: props.fileNo
       });
-      fileUrl.value = import.meta.env.VITE_PUBLIC_DEVPATH + url;
+      fileUrl.value = import.meta.env.VITE_PUBLIC_HOST + url;
     }
 
+    // let a = process.env.NODE_ENV;
+    // console.log(a, "a");
     // VITE_PUBLIC_DEVPATH
-    console.log(import.meta.env.VITE_PUBLIC_DEVPATH);
+    // console.log(import.meta.env.VITE_PUBLIC_HOST);
     getUrl();
     return {
       fileUrl

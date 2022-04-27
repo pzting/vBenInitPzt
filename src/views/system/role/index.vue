@@ -2,7 +2,7 @@
   <div>
     <BasicTable @register="registerTable">
       <template #toolbar>
-        <a-button type="primary" @click="handleCreate"> 新增</a-button>
+        <a-button type="primary" @click="handleCreate"> {{ title("basic.add") }}</a-button>
       </template>
       <template #bodyCell="{ column,record }">
         <template v-if="column.key === 'action'">
@@ -10,7 +10,7 @@
             :actions="[
                           {
                             icon: 'clarity:note-edit-line',
-                            tooltip:'编辑',
+                            tooltip:title('basic.edit'),
                             onClick: handleEdit.bind(null, record),
                           },
                         ]"
@@ -29,7 +29,7 @@ import { roleList, roleSave } from "/@/api/system";
 
 import { useDrawer } from "/@/components/Drawer";
 import Drawer from "./Drawer.vue";
-
+import { title } from "/@/hooks/web/useI18n";
 import { columns, searchFormSchema } from "./index.data";
 
 export default defineComponent({
@@ -42,7 +42,7 @@ export default defineComponent({
   setup() {
     const [registerDrawer, { openDrawer }] = useDrawer();
     const [registerTable, { reload }] = useTable({
-      title: "角色列表",
+      title: "",
       api: roleList,
       columns,
       formConfig: {
@@ -55,7 +55,7 @@ export default defineComponent({
       showIndexColumn: false,
       actionColumn: {
         width: 80,
-        title: "操作",
+        title: title("basic.action"),
         dataIndex: "action",
         key: "action"
         // slots: { customRender: "action" },
@@ -84,6 +84,7 @@ export default defineComponent({
     return {
       registerTable,
       registerDrawer,
+      title,
       handleCreate,
       handleEdit,
       handleSuccess

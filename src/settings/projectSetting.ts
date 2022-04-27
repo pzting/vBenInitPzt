@@ -1,21 +1,21 @@
-import type { ProjectConfig } from '/#/config';
-import { MenuTypeEnum, MenuModeEnum, TriggerEnum, MixSidebarTriggerEnum } from '/@/enums/menuEnum';
-import { CacheTypeEnum } from '/@/enums/cacheEnum';
+import type { ProjectConfig } from "/#/config";
+import { MenuTypeEnum, MenuModeEnum, TriggerEnum, MixSidebarTriggerEnum } from "/@/enums/menuEnum";
+import { CacheTypeEnum } from "/@/enums/cacheEnum";
 import {
   ContentEnum,
   PermissionModeEnum,
   ThemeEnum,
   RouterTransitionEnum,
   SettingButtonPositionEnum,
-  SessionTimeoutProcessingEnum,
-} from '/@/enums/appEnum';
-import { SIDE_BAR_BG_COLOR_LIST, HEADER_PRESET_BG_COLOR_LIST } from './designSetting';
-import { primaryColor } from '../../build/config/themeConfig';
+  SessionTimeoutProcessingEnum
+} from "/@/enums/appEnum";
+import { SIDE_BAR_BG_COLOR_LIST, HEADER_PRESET_BG_COLOR_LIST } from "./designSetting";
+import { primaryColor } from "../../build/config/themeConfig";
 
 // ! You need to clear the browser cache after the change
 const setting: ProjectConfig = {
   // Whether to show the configuration button
-  showSettingButton: true,
+  showSettingButton: false,
 
   // Whether to show the theme switch button
   showDarkModeToggle: true,
@@ -48,7 +48,7 @@ const setting: ProjectConfig = {
   contentMode: ContentEnum.FULL,
 
   // Whether to display the logo
-  showLogo: true,
+  showLogo: false,
 
   // Whether to show footer
   showFooter: false,
@@ -72,7 +72,7 @@ const setting: ProjectConfig = {
     // Whether to show the notification button
     showNotice: false,
     // Whether to display the menu search
-    showSearch: false,
+    showSearch: false
   },
 
   // Menu configuration
@@ -103,7 +103,7 @@ const setting: ProjectConfig = {
     // Split menu
     split: false,
     // Top menu layout
-    topMenuAlign: 'center',
+    topMenuAlign: "center",
     // Fold trigger position
     trigger: TriggerEnum.HEADER,
     // Turn on accordion mode, only show a menu
@@ -113,7 +113,7 @@ const setting: ProjectConfig = {
     // Module opening method ‘click’ |'hover'
     mixSideTrigger: MixSidebarTriggerEnum.CLICK,
     // Fixed expanded menu
-    mixSideFixed: false,
+    mixSideFixed: false
   },
 
   // Multi-label
@@ -128,7 +128,7 @@ const setting: ProjectConfig = {
     // Whether to show the refresh button
     showRedo: true,
     // Whether to show the collapse button
-    showFold: true,
+    showFold: true
   },
 
   // Transition Setting
@@ -145,7 +145,7 @@ const setting: ProjectConfig = {
     openPageLoading: true,
 
     // Whether to open the top progress bar
-    openNProgress: false,
+    openNProgress: false
   },
 
   // Whether to enable KeepAlive cache is best to close during development, otherwise the cache needs to be cleared every time
@@ -174,7 +174,7 @@ const setting: ProjectConfig = {
 
   // Whether to cancel the http request that has been sent but not responded when switching the interface.
   // If it is enabled, I want to overwrite a single interface. Can be set in a separate interface
-  removeAllHttpPending: false,
+  removeAllHttpPending: false
 };
 
 export default setting;

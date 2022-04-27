@@ -278,6 +278,7 @@ export default defineComponent({
 
     function setProps(props: Partial<BasicTableProps>) {
       innerPropsRef.value = { ...unref(innerPropsRef), ...props };
+      // console.log(innerPropsRef.value, " innerPropsRef.value");
     }
 
     const tableAction: TableActionType = {

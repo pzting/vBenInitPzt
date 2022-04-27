@@ -78,8 +78,8 @@ export const formSchema: FormSchema[] = [
   },
   {
     label: "权限点",
-    field: "authIds",
-    slot: "authIds",
+    field: "authPointIds",
+    slot: "authPointIds",
     component: "Input"
   }
 ];
